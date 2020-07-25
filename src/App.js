@@ -25,7 +25,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('http://api.quotable.io/quotes')
+    fetch('https://api.quotable.io/quotes')
       .then((res) => res.json())
       .then((data) => {
         const { color } = this.state;
