@@ -55,7 +55,7 @@ class App extends Component {
     let contentStr = this.state.content.replace(/\s/g, '%20');
     console.log(this.state.href);
     this.setState({
-      href: `twitter.com/intent/tweet?text="${contentStr}"%20-%20${authorStr}`,
+      href: `https://twitter.com/intent/tweet?text="${contentStr}"%20-%20${authorStr}`,
     });
   };
 
