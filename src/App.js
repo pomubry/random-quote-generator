@@ -22,6 +22,8 @@ class App extends Component {
       '#5758BB',
     ],
     activeColor: '',
+    opacity: 0,
+    transition: 'all 1s ease',
   };
 
   componentDidMount() {
@@ -35,6 +37,7 @@ class App extends Component {
           content: data.results[index].content,
           quoteArr: [...data.results],
           activeColor: color[Math.floor(Math.random() * color.length)],
+          opacity: 1,
         });
       });
   }
@@ -43,11 +46,20 @@ class App extends Component {
     e.preventDefault();
     const { quoteArr, color } = this.state;
     let index = Math.floor(Math.random() * quoteArr.length);
-    this.setState({
-      author: quoteArr[index].author,
-      content: quoteArr[index].content,
-      activeColor: color[Math.floor(Math.random() * color.length)],
-    });
+    this.setState(
+      {
+        author: quoteArr[index].author,
+        content: quoteArr[index].content,
+        activeColor: color[Math.floor(Math.random() * color.length)],
+        opacity: 0,
+        transition: 'none',
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({ opacity: 1, transition: 'all .25s ease' });
+        }, 250);
+      }
+    );
   };
 
   handleTweet = (e) => {
@@ -60,16 +72,13 @@ class App extends Component {
   };
 
   render() {
-    const { activeColor } = this.state;
-
+    const { activeColor, opacity, transition } = this.state;
+    const generalTransition = {
+      backgroundColor: activeColor,
+      transition: 'all 1s ease',
+    };
     return (
-      <div
-        className="App"
-        style={{
-          backgroundColor: activeColor,
-          transition: 'all 0.5s ease',
-        }}
-      >
+      <div className="App" style={generalTransition}>
         <header>
           <h1>Random Quote Generator</h1>
         </header>
@@ -77,14 +86,23 @@ class App extends Component {
           <div className="quote">
             <h2
               id="text"
-              style={{ color: activeColor, transition: 'all 0.5s ease' }}
+              style={{
+                color: activeColor,
+                transition: transition,
+                opacity: `${opacity}`,
+              }}
+              onTransitionEnd={this.handleTransition}
             >
               <img src={quote} alt="quote" className="quoteSVG" />{' '}
               {this.state.content}
             </h2>
             <p
               id="author"
-              style={{ color: activeColor, transition: 'all 1s ease' }}
+              style={{
+                color: activeColor,
+                transition: transition,
+                opacity: `${opacity}`,
+              }}
             >
               - {this.state.author}
             </p>
@@ -93,7 +111,7 @@ class App extends Component {
             <button
               onClick={this.handleGenerate}
               id="new-quote"
-              style={{ backgroundColor: activeColor }}
+              style={generalTransition}
             >
               Generate a Random Quote
             </button>
@@ -102,7 +120,7 @@ class App extends Component {
               onClick={this.handleTweet}
               rel="noopener noreferrer"
               id="tweet-quote"
-              style={{ backgroundColor: activeColor }}
+              style={generalTransition}
               target="_blank"
             >
               Tweet this Quote
