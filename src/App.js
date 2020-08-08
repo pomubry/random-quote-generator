@@ -27,7 +27,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('https://api.quotable.io/quotes')
+    fetch('https://api.quotable.io/quotes?limit=50&maxLength=200')
       .then((res) => res.json())
       .then((data) => {
         const { color } = this.state;
@@ -39,6 +39,7 @@ class App extends Component {
           activeColor: color[Math.floor(Math.random() * color.length)],
           opacity: 1,
         });
+        console.log(data);
       });
   }
 
