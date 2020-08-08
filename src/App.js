@@ -39,7 +39,6 @@ class App extends Component {
           activeColor: color[Math.floor(Math.random() * color.length)],
           opacity: 1,
         });
-        console.log(data);
       });
   }
 
